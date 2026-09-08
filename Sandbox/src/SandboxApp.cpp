@@ -1,16 +1,34 @@
 #include <FlyWhale.h>
 
-class Sandbox : public FlyWhale::Application {
+class ExampleLayer : public FlyWhale::Layer
+{
 public:
-    Sandbox() {
+    ExampleLayer() : Layer("Example") {}
 
+    void OnUpdate() override
+    {
+        //FW_INFO("ExampleLayer::Update");
     }
 
-    ~Sandbox() {
-
-    }
+    void OnEvent(FlyWhale::Event& event) override
+    {
+        FW_TRACE("{0}", event);
+    } 
 };
 
-FlyWhale::Application* FlyWhale::CreateApplication() {
+class Sandbox : public FlyWhale::Application 
+{
+public:
+    Sandbox() 
+    {
+        PushLayer(new ExampleLayer());
+        PushOverlay(new FlyWhale::ImGuiLayer());
+    }
+
+    ~Sandbox() {}
+};
+
+FlyWhale::Application* FlyWhale::CreateApplication() 
+{
     return new Sandbox();
 }
