@@ -47,6 +47,7 @@ target_include_directories(FlyWhale PUBLIC
     "vendor/glad/include"
     "vendor/imgui"
     "vendor/imgui/backends"
+    SYSTEM "vendor/glm"
     # Note: Add other vendor include paths here as you progress (GLFW, glad, glm, imgui)
 )
 

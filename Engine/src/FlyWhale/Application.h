@@ -6,7 +6,7 @@
 #include "FlyWhale/LayerStack.h"
 #include "FlyWhale/Events/Event.h"
 #include "FlyWhale/Events/ApplicationEvent.h"
-
+#include "FlyWhale/ImGui/ImGuiLayer.h"
 
 namespace FlyWhale 
 {
@@ -32,6 +32,7 @@ namespace FlyWhale
         bool OnWindowClose(WindowCloseEvent& e);
 
         std::unique_ptr<Window> m_Window;
+        ImGuiLayer* m_ImGuiLayer;
         bool m_Running = true;
         LayerStack m_LayerStack;
     private:

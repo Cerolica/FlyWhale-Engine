@@ -20,6 +20,10 @@
 
 #endif
 
+#ifdef FW_DEBUG
+    #define FW_ENABLE_ASSERTS
+#endif
+
 #ifdef FW_ENABLE_ASSERTS
     #define FW_ASSERT(x, ...) { if (!(x)) { FW_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
     #define FW_CORE_ASSERT(x, ...) { if (!(x)) { FW_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
