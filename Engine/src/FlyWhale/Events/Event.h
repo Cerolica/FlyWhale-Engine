@@ -1,5 +1,7 @@
 #pragma once
 
+#include "fwpch.h"
+
 #include "FlyWhale/Core.h"
 
 namespace FlyWhale 
@@ -35,7 +37,7 @@ namespace FlyWhale
 
 #define EVENT_CLASS_CATEGORY(category) virtual int GetCategoryFlags() const override { return category; }
 
-    class FLYWHALE_API Event  
+    class Event  
     {
         friend class EventDispatcher;
     public:

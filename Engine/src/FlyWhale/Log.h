@@ -9,7 +9,7 @@
 namespace FlyWhale 
 {
 
-    class FLYWHALE_API Log 
+    class Log 
     {
     public:
         static void Init();

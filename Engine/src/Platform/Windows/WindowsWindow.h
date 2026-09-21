@@ -3,8 +3,10 @@
 #include "FlyWhale/Core.h"
 #include "FlyWhale/Log.h"
 #include "FlyWhale/Window.h"
+#include "FlyWhale/Renderer/GraphicsContext.h"
 
 #include <GLFW/glfw3.h>
+
 
 namespace FlyWhale 
 {
@@ -34,6 +36,7 @@ namespace FlyWhale
         virtual void Shutdown();
     private: // For datas
         GLFWwindow* m_Window;
+        GraphicsContext*  m_Context;
 
         struct WindowData
         {

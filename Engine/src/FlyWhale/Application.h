@@ -6,12 +6,17 @@
 #include "FlyWhale/LayerStack.h"
 #include "FlyWhale/Events/Event.h"
 #include "FlyWhale/Events/ApplicationEvent.h"
+
 #include "FlyWhale/ImGui/ImGuiLayer.h"
+
+#include "FlyWhale/Renderer/Shader.h"
+#include "FlyWhale/Renderer/Buffer.h"
+#include "FlyWhale/Renderer/VertexArray.h"
 
 namespace FlyWhale 
 {
 
-    class FLYWHALE_API Application 
+    class Application 
     {
     public:
         Application();
@@ -35,6 +40,12 @@ namespace FlyWhale
         ImGuiLayer* m_ImGuiLayer;
         bool m_Running = true;
         LayerStack m_LayerStack;
+
+        std::shared_ptr<Shader> m_Shader;
+        std::shared_ptr<VertexArray> m_VertexArray;
+
+        std::shared_ptr<Shader> m_BlueShader;
+        std::shared_ptr<VertexArray> m_SquareVA;
     private:
         static Application* s_Instance;
     };

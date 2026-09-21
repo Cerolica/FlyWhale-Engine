@@ -16,6 +16,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "FlyWhale/Log.h"
+
 #ifdef FW_PLATFORM_WINDOWS
     #include <Windows.h>
 #endif

@@ -5,7 +5,7 @@
 namespace FlyWhale
 {
 
-    class FLYWHALE_API LayerStack
+    class LayerStack
     {
     public:
         LayerStack();

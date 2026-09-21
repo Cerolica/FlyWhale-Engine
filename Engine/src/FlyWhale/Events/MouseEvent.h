@@ -4,7 +4,7 @@
 
 namespace FlyWhale {
 
-    class FLYWHALE_API MouseMovedEvent : public Event 
+    class MouseMovedEvent : public Event 
     {
     public:
         MouseMovedEvent(float x, float y) : m_MouseX(x), m_MouseY(y) {}
@@ -25,7 +25,7 @@ namespace FlyWhale {
         float m_MouseX, m_MouseY;
     };
 
-    class FLYWHALE_API MouseScrolledEvent : public Event 
+    class MouseScrolledEvent : public Event 
     {
     public:
         MouseScrolledEvent(const float xOffset, const float yOffset) 
@@ -47,7 +47,7 @@ namespace FlyWhale {
         float m_XOffset, m_YOffset;
     };
 
-    class FLYWHALE_API MouseButtonEvent : public Event 
+    class MouseButtonEvent : public Event 
     {
     public:
         inline int GetMouseButton() const { return m_Button; }
@@ -59,7 +59,7 @@ namespace FlyWhale {
         int m_Button;
     };
 
-    class FLYWHALE_API MouseButtonPressedEvent : public MouseButtonEvent 
+    class MouseButtonPressedEvent : public MouseButtonEvent 
     {
     public:
         MouseButtonPressedEvent(int button) : MouseButtonEvent(button) {}
@@ -74,7 +74,7 @@ namespace FlyWhale {
         EVENT_CLASS_TYPE(MouseButtonPressed)
     };
 
-    class FLYWHALE_API MouseButtonReleasedEvent : public MouseButtonEvent 
+    class MouseButtonReleasedEvent : public MouseButtonEvent 
     {
     public:
         MouseButtonReleasedEvent(int button) : MouseButtonEvent(button) {}

@@ -25,7 +25,7 @@ file(GLOB IMGUI_SRC
 find_package(OpenGL REQUIRED)
 
 # Build FlyWhale as a Shared Library (.dll on Windows)
-add_library(FlyWhale SHARED ${FW_SRC} vendor/glad/src/glad.c ${IMGUI_SRC})
+add_library(FlyWhale STATIC ${FW_SRC} vendor/glad/src/glad.c ${IMGUI_SRC})
 
 # Skip pch specifically for glad.c (because it is not .cpp file duh)
 set_source_files_properties(vendor/glad/src/glad.c PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
@@ -39,7 +39,7 @@ set_target_properties(FlyWhale PROPERTIES CXX_VISIBILITY_PRESET hidden)
 set_target_properties(FlyWhale PROPERTIES VISIBILITY_INLINES_HIDDEN 1)
 
 # Tell Core.h to use dllexport or visibility("default")
-target_compile_definitions(FlyWhale PRIVATE FW_BUILD_DLL GLFW_INCLUDE_NONE)
+target_compile_definitions(FlyWhale PRIVATE FW_BUILD_DLL GLFW_INCLUDE_NONE PUBLIC $<$<CONFIG:Debug>:FW_DEBUG>)
 
 # Include directories (where to look for #include <...>)
 target_include_directories(FlyWhale PUBLIC
