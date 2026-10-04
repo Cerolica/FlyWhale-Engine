@@ -16,6 +16,17 @@
 
 #include "FlyWhale/ImGui/ImGuiLayer.h"
 
+// ---Renderer---
+// --------------
+#include "FlyWhale/Renderer/Renderer.h"
+#include "FlyWhale/Renderer/RenderCommand.h"
+
+#include "FlyWhale/Renderer/Buffer.h"
+#include "FlyWhale/Renderer/Shader.h"
+#include "FlyWhale/Renderer/VertexArray.h"
+
+#include "FlyWhale/Renderer/OrthographicCamera.h"
+
 // ---Entry Point---
 // -----------------
 #include "FlyWhale/EntryPoint.h"

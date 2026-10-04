@@ -61,13 +61,20 @@ namespace FlyWhale
         template<typename T>
         using EventFn = std::function<bool(T&)>;
     public:
+        // Holds a reference to the generic event passed down from the layer
         EventDispatcher(Event& event) : m_Event(event) {}
 
+        // Templated dispatch function
+        // T = The specific event type it is listening for (e.g., KeyPressedEvent)
+        // F = The function signature/lambda to execute if types match
         template<typename T> 
         bool Dispatch(EventFn<T> func) 
         {
+            // Check if the generic event's runtime ID matches the target event class ID
             if (m_Event.GetEventType() == T::GetStaticType()) 
             {
+                // Downcast the generic Event& reference to the specific target type T&
+                // Execute the function 'func' and update the 'Handled' status
                 m_Event.Handled |= func(static_cast<T&>(m_Event));
                 return true;
             }
