@@ -5,6 +5,8 @@
 #include "FlyWhale/Layer.h"
 #include "FLyWhale/Log.h"
 
+#include "FlyWhale/Core/Timestep.h"
+
 #include "FlyWhale/Input.h"
 #include "FlyWhale/KeyCodes.h"
 #include "FlyWhale/MouseCodes.h"

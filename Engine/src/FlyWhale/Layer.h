@@ -2,6 +2,7 @@
 
 #include "FlyWhale/Core.h"
 #include "FlyWhale/Events/Event.h"
+#include "FlyWhale/Core/Timestep.h"
 
 namespace FlyWhale
 {
@@ -14,7 +15,7 @@ namespace FlyWhale
 
         virtual void OnAttach() {}
         virtual void OnDetach() {}
-        virtual void OnUpdate() {}
+        virtual void OnUpdate(Timestep ts) {}
         virtual void OnImGuiRender() {}
         virtual void OnEvent(Event& event) {}
 
