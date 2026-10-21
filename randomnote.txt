@@ -1,0 +1,1 @@
+how did the cherno manage the shading language of the game engine, and generally how do people manage shading language in their engine for multiple api like opengl and directx

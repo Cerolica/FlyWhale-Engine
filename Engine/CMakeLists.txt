@@ -25,7 +25,7 @@ file(GLOB IMGUI_SRC
 find_package(OpenGL REQUIRED)
 
 # Build FlyWhale as a Shared Library (.dll on Windows)
-add_library(FlyWhale STATIC ${FW_SRC} vendor/glad/src/glad.c ${IMGUI_SRC})
+add_library(FlyWhale STATIC ${FW_SRC} vendor/glad/src/glad.c ${IMGUI_SRC} vendor/stb_image/stb_image.cpp)
 
 # Skip pch specifically for glad.c (because it is not .cpp file duh)
 set_source_files_properties(vendor/glad/src/glad.c PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
@@ -47,6 +47,7 @@ target_include_directories(FlyWhale PUBLIC
     "vendor/glad/include"
     "vendor/imgui"
     "vendor/imgui/backends"
+    "vendor/stb_image"
     SYSTEM "vendor/glm"
     # Note: Add other vendor include paths here as you progress (GLFW, glad, glm, imgui)
 )

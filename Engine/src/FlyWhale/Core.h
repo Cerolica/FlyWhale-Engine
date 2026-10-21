@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 // Window (MSVC/MinGW)
 #define FLYWHALE_API
 
@@ -18,3 +20,13 @@
 #define BIT(x) (1 << x)
 
 #define FW_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
+
+namespace FlyWhale
+{
+
+    template<typename T>
+    using Scope = std::unique_ptr<T>;
+
+    template<typename T>
+    using Ref = std::shared_ptr<T>;
+}
