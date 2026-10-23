@@ -2,7 +2,7 @@
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
-#include "FlyWhale/Log.h"
+#include "FlyWhale/Core/Log.h"
 
 namespace FlyWhale
 {

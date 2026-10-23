@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FlyWhale/Input.h"
+#include "FlyWhale/Core/Input.h"
 
 namespace FlyWhale
 {

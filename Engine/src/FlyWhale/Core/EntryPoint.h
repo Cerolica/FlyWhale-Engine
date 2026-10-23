@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Application.h"
-#include "Log.h"
+#include "FlyWhale/Core/Application.h"
+#include "FlyWhale/Core/Log.h"
 
 #ifdef FW_PLATFORM_WINDOWS
 

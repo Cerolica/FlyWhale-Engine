@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FlyWhale/Core.h"
+#include "FlyWhale/Core/Core.h"
 #include "FlyWhale/Events/Event.h"
 #include "FlyWhale/Core/Timestep.h"
 

@@ -1,5 +1,5 @@
-#include "FlyWhale/Core.h"
-#include "Events/Event.h"
+#include "FlyWhale/Core/Core.h"
+#include "FlyWhale/Events/Event.h"
 
 namespace FlyWhale 
 {

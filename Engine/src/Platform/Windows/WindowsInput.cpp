@@ -1,6 +1,6 @@
 #include "WindowsInput.h"
 
-#include "FlyWhale/Application.h"
+#include "FlyWhale/Core/Application.h"
 
 #include "GLFW/glfw3.h"
 

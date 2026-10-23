@@ -2,7 +2,7 @@
 
 #include "fwpch.h"
 
-#include "FlyWhale/Core.h"
+#include "FlyWhale/Core/Core.h"
 
 namespace FlyWhale 
 {

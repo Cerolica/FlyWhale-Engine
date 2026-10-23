@@ -1,8 +1,8 @@
 #pragma once
 
-#include "FlyWhale/Core.h"
-#include "FlyWhale/Log.h"
-#include "FlyWhale/Window.h"
+#include "FlyWhale/Core/Core.h"
+#include "FlyWhale/Core/Log.h"
+#include "FlyWhale/Core/Window.h"
 #include "FlyWhale/Renderer/GraphicsContext.h"
 
 #include <GLFW/glfw3.h>

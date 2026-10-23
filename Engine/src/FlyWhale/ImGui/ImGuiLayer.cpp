@@ -6,7 +6,7 @@
 
 #include <GLFW/glfw3.h>
 
-#include "FlyWhale/Application.h"
+#include "FlyWhale/Core/Application.h"
 
 namespace FlyWhale
 {
