@@ -30,26 +30,36 @@ namespace FlyWhale
 
     OpenGLVertexArray::OpenGLVertexArray()
     {
+        FW_PROFILE_FUNCTION();
+
         glCreateVertexArrays(1, &m_RendererID);
     }
 
     OpenGLVertexArray::~OpenGLVertexArray()
     {
+        FW_PROFILE_FUNCTION();
+
         glDeleteVertexArrays(1, &m_RendererID);
     }
 
     void OpenGLVertexArray::Bind() const
     {
+        FW_PROFILE_FUNCTION();
+
         glBindVertexArray(m_RendererID);
     }
 
     void OpenGLVertexArray::Unbind() const
     {
+        FW_PROFILE_FUNCTION();
+
         glBindVertexArray(0);
     }
 
     void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
     {
+        FW_PROFILE_FUNCTION();
+
         FW_CORE_ASSERT(vertexBuffer->GetLayout().GetElements().size(), "VertexBuffer has no layout!");
 
         glBindVertexArray(m_RendererID);
@@ -75,6 +85,8 @@ namespace FlyWhale
 
     void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer)
     {
+        FW_PROFILE_FUNCTION();
+
         glBindVertexArray(m_RendererID);
         indexBuffer->Bind();
 

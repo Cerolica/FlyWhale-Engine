@@ -18,6 +18,8 @@ namespace FlyWhale
 
     void ImGuiLayer::OnAttach()
     {
+        FW_PROFILE_FUNCTION();
+
         // Setup Dear ImgGui context
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
@@ -50,19 +52,25 @@ namespace FlyWhale
 
     void ImGuiLayer::OnDetach()
     {
+        FW_PROFILE_FUNCTION();
+
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplGlfw_Shutdown();
         ImGui::DestroyContext();
     }
 
+    /*
     void ImGuiLayer::OnImGuiRender()
     {
         static bool show = true;
         ImGui::ShowDemoWindow(&show);
     }
+    */
 
     void ImGuiLayer::Begin()
     {
+        FW_PROFILE_FUNCTION();
+
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
@@ -70,6 +78,8 @@ namespace FlyWhale
 
     void ImGuiLayer::End()
     {
+        FW_PROFILE_FUNCTION();
+        
         ImGuiIO& io = ImGui::GetIO();
         Application& app = Application::Get();
         io.DisplaySize = ImVec2(app.GetWindow().GetWidth(), app.GetWindow().GetHeight());

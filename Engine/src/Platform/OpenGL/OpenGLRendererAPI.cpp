@@ -5,9 +5,11 @@
 
 namespace FlyWhale
 {
-
+    
     void OpenGLRendererAPI::Init()
     {
+        FW_PROFILE_FUNCTION();
+
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -29,10 +31,12 @@ namespace FlyWhale
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray)
+    void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount)
     {
+        uint32_t count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetCount();
+
         glDrawElements(GL_TRIANGLES, 
-                       vertexArray->GetIndexBuffer()->GetCount(),
+                       count,
                        GL_UNSIGNED_INT, 
                        nullptr
                       );

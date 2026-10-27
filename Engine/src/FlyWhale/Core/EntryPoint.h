@@ -10,13 +10,18 @@ extern FlyWhale::Application* FlyWhale::CreateApplication();
 int main(int argc,  char** argv) 
 {
     FlyWhale::Log::Init();
-    FW_CORE_WARN("Initialized Log!");
-    int a = 5;
-    FW_INFO("Hello! Var={0}", a);
 
+    FW_PROFILE_BEGIN_SESSION("Startup", "FlyWhale-Startup.json");
     auto app = FlyWhale::CreateApplication();
+    FW_PROFILE_END_SESSION();
+
+    FW_PROFILE_BEGIN_SESSION("Runtime", "FlyWhale-Runtime.json");
     app->Run();
+    FW_PROFILE_END_SESSION();
+
+    FW_PROFILE_BEGIN_SESSION("Shutdown", "FlyWhale-Shutdown.json");
     delete app;
+    FW_PROFILE_END_SESSION();
 }
 
 #endif

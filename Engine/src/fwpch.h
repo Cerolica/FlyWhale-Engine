@@ -21,6 +21,8 @@
 
 #include "FlyWhale/Core/Log.h"
 
+#include "FlyWhale/Debug/Instrumentor.h"
+
 #ifdef FW_PLATFORM_WINDOWS
     #include <Windows.h>
 #endif

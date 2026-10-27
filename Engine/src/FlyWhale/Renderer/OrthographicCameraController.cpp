@@ -14,6 +14,8 @@ namespace FlyWhale
 
     void OrthographicCameraController::OnUpdate(Timestep ts)
     {
+        FW_PROFILE_FUNCTION();
+
         if (Input::IsKeyPressed(FW_KEY_A))
             m_CameraPosition.x -= m_CameraTranslationSpeed * ts;
         
@@ -44,6 +46,8 @@ namespace FlyWhale
 
     void OrthographicCameraController::OnEvent(Event& e)
     {
+        FW_PROFILE_FUNCTION();
+
         EventDispatcher dispatcher(e);
         dispatcher.Dispatch<MouseScrolledEvent>(FW_BIND_EVENT_FN(OrthographicCameraController::OnMouseScrolled));
         dispatcher.Dispatch<WindowResizeEvent>(FW_BIND_EVENT_FN(OrthographicCameraController::OnWindowResize));
@@ -63,6 +67,8 @@ namespace FlyWhale
     
     bool OrthographicCameraController::OnWindowResize(WindowResizeEvent& e)
     {
+        FW_PROFILE_FUNCTION();
+        
         m_AspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
         m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 

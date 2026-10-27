@@ -15,6 +15,8 @@ namespace FlyWhale
 
     void OpenGLContext::Init()
     {
+        FW_PROFILE_FUNCTION();
+
         glfwMakeContextCurrent(m_WindowHandle);
         int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
         FW_CORE_ASSERT(status, "Failed to initialize Glad!");
@@ -27,6 +29,8 @@ namespace FlyWhale
 
     void OpenGLContext::SwapBuffers()
     {
+        FW_PROFILE_FUNCTION();
+
         glfwSwapBuffers(m_WindowHandle);
     }
 }

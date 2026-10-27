@@ -21,6 +21,8 @@ namespace FlyWhale
 
     OpenGLShader::OpenGLShader(const std::string& filepath)
     {
+        FW_PROFILE_FUNCTION();
+
         std::string source = ReadFile(filepath);
         auto shaderSources = PreProcess(source);
         Compile(shaderSources);
@@ -33,6 +35,8 @@ namespace FlyWhale
     OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
         : m_Name(name)
     {
+        FW_PROFILE_FUNCTION();
+
         std::unordered_map<GLenum, std::string> sources;
         sources[GL_VERTEX_SHADER] = vertexSrc;
         sources[GL_FRAGMENT_SHADER] = fragmentSrc;
@@ -41,11 +45,15 @@ namespace FlyWhale
 
     OpenGLShader::~OpenGLShader() 
     {
+        FW_PROFILE_FUNCTION();
+
         glDeleteProgram(m_RendererID);
     }
 
     std::string OpenGLShader::ReadFile(const std::string& filepath)
     {
+        FW_PROFILE_FUNCTION();
+
         std::string result;
         std::ifstream in(filepath, std::ios::in, std::ios::binary);
         if (in)
@@ -66,6 +74,8 @@ namespace FlyWhale
 
     std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(std::string& source)
     {
+        FW_PROFILE_FUNCTION();
+
         std::unordered_map<GLenum, std::string> shaderSources;
 
         const char* typeToken = "#type";
@@ -89,6 +99,7 @@ namespace FlyWhale
 
     void OpenGLShader::Compile(std::unordered_map<GLenum, std::string>& shaderSources)
     {
+        FW_PROFILE_FUNCTION();
 
         // Get a program object.
         GLuint program = glCreateProgram();
@@ -173,32 +184,70 @@ namespace FlyWhale
 
     void OpenGLShader::Bind() const 
     {
+        FW_PROFILE_FUNCTION();
+
         glUseProgram(m_RendererID);
     }
 
     void OpenGLShader::Unbind() const 
-    {
+    {   
+        FW_PROFILE_FUNCTION();
+
         glUseProgram(0);
     }
 
     void OpenGLShader::SetInt(const std::string& name, int value)
     {
+        FW_PROFILE_FUNCTION();
+
         UploadUniformInt(name, value);
+    }
+    
+    void OpenGLShader::SetIntArray(const std::string& name, int* values, uint32_t count)
+    {
+        UploadUniformIntArray(name, values, count);
+    }
+
+    void OpenGLShader::SetFloat(const std::string& name, float value)
+    {
+        FW_PROFILE_FUNCTION();
+
+        UploadUniformFloat(name, value);
+    }
+
+    void OpenGLShader::SetFloat2(const std::string& name, const glm::vec2& values)
+    {
+        FW_PROFILE_FUNCTION();
+
+        UploadUniformFloat2(name, values);
     }
 
 
     void OpenGLShader::SetFloat3(const std::string& name, const glm::vec3& values) 
     {
+        FW_PROFILE_FUNCTION();
+
         UploadUniformFloat3(name, values);
     }
 
     void OpenGLShader::SetFloat4(const std::string& name, const glm::vec4& values) 
     {
+        FW_PROFILE_FUNCTION();
+
         UploadUniformFloat4(name, values);
+    }
+
+    void OpenGLShader::SetMat3(const std::string& name, const glm::mat3& values) 
+    {
+        FW_PROFILE_FUNCTION();
+
+        UploadUniformMat3(name, values);
     }
 
     void OpenGLShader::SetMat4(const std::string& name, const glm::mat4& values) 
     {
+        FW_PROFILE_FUNCTION();
+
         UploadUniformMat4(name, values);
     }
 
@@ -207,6 +256,12 @@ namespace FlyWhale
     {
         GLint location = glGetUniformLocation(m_RendererID, name.c_str());
         glUniform1i(location, value);
+    }
+
+    void OpenGLShader::UploadUniformIntArray(const std::string& name, int* values, uint32_t count)
+    {
+        GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+        glUniform1iv(location, count, values);
     }
 
     void OpenGLShader::UploadUniformFloat(const std::string& name, float value)
