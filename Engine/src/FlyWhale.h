@@ -28,6 +28,7 @@
 #include "FlyWhale/Renderer/Buffer.h"
 #include "FlyWhale/Renderer/Shader.h"
 #include "FlyWhale/Renderer/Texture.h"
+#include "FlyWhale/Renderer/SubTexture2D.h"
 #include "FlyWhale/Renderer/VertexArray.h"
 
 #include "FlyWhale/Renderer/OrthographicCamera.h"

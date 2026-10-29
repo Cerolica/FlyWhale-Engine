@@ -6,7 +6,6 @@
 #include "FlyWhale/Events/ApplicationEvent.h"
 #include "FlyWhale/Events/MouseEvent.h"
 
-
 namespace FlyWhale
 {
 
@@ -22,8 +21,10 @@ namespace FlyWhale
         inline const OrthographicCamera& GetCamera() const { return m_Camera; }
 
         inline float GetZoomLevel() { return m_ZoomLevel; }
-        inline void SetZoomLevel(float level) { m_ZoomLevel = level; }
+        inline void SetZoomLevel(float level) { m_ZoomLevel = level; CalculateView(); }
     private:
+        void CalculateView();
+
         bool OnMouseScrolled(MouseScrolledEvent& e);
         bool OnWindowResize(WindowResizeEvent& e);
     private:
@@ -33,7 +34,7 @@ namespace FlyWhale
 
         bool m_Rotation = false;
 
-        glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
+        Vector3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
         float m_CameraRotation = 0.0f;
         float m_CameraTranslationSpeed = 5.0f, m_CameraRotationSpeed = 180.0f;
     };

@@ -2,8 +2,6 @@
 
 #include "FlyWhale/Renderer/Shader.h"
 
-#include <glm/glm.hpp>
-
 // TODO: REMOVE!
 typedef unsigned int GLenum;
 
@@ -23,11 +21,11 @@ namespace FlyWhale
         virtual void SetIntArray(const std::string& name, int* values, uint32_t count) override;
         
         virtual void SetFloat(const std::string& name, float value) override;
-        virtual void SetFloat2(const std::string& name, const glm::vec2& values) override;
-        virtual void SetFloat3(const std::string& name, const glm::vec3& values) override;
-        virtual void SetFloat4(const std::string& name, const glm::vec4& values) override;
-        virtual void SetMat3(const std::string& name, const glm::mat3& values) override;
-        virtual void SetMat4(const std::string& name, const glm::mat4& values) override;
+        virtual void SetFloat2(const std::string& name, const Vector2& values) override;
+        virtual void SetFloat3(const std::string& name, const Vector3& values) override;
+        virtual void SetFloat4(const std::string& name, const Vector4& values) override;
+        virtual void SetMat3(const std::string& name, const Matrix3& values) override;
+        virtual void SetMat4(const std::string& name, const Matrix4& values) override;
 
         virtual const std::string& GetName() const override { return m_Name; }
 
@@ -35,12 +33,12 @@ namespace FlyWhale
         void UploadUniformIntArray(const std::string& name, int* values, uint32_t count);
 
         void UploadUniformFloat(const std::string& name, float value);
-        void UploadUniformFloat2(const std::string& name, const glm::vec2& values);
-        void UploadUniformFloat3(const std::string& name, const glm::vec3& values);
-        void UploadUniformFloat4(const std::string& name, const glm::vec4& values);
+        void UploadUniformFloat2(const std::string& name, const Vector2& values);
+        void UploadUniformFloat3(const std::string& name, const Vector3& values);
+        void UploadUniformFloat4(const std::string& name, const Vector4& values);
 
-        void UploadUniformMat3(const std::string& name, const glm::mat3& matrix);
-        void UploadUniformMat4(const std::string& name, const glm::mat4& matrix);
+        void UploadUniformMat3(const std::string& name, const Matrix3& matrix);
+        void UploadUniformMat4(const std::string& name, const Matrix4& matrix);
     private:
         std::string ReadFile(const std::string& filepath);
         std::unordered_map<GLenum, std::string> PreProcess(std::string& source);

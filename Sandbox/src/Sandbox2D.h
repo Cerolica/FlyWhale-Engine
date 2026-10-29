@@ -22,8 +22,13 @@ private:
     FlyWhale::Ref<FlyWhale::Shader> m_FlatColorShader;
 
     FlyWhale::Ref<FlyWhale::Texture2D> m_CheckerboardTexture;
+    FlyWhale::Ref<FlyWhale::Texture2D> m_SpriteSheet;
+    FlyWhale::Ref<FlyWhale::SubTexture2D> m_TextureStairs;
+    FlyWhale::Ref<FlyWhale::SubTexture2D> m_TextureBarrel;
+    FlyWhale::Ref<FlyWhale::SubTexture2D> m_TextureTree;
 
     glm::vec4 m_SquareColor = { 0.2f, 0.3f, 0.8f, 1.0f };
 
-
+    uint32_t m_MapWidth, m_MapHeight;
+    std::unordered_map<char, FlyWhale::Ref<FlyWhale::SubTexture2D>> s_TextureMap;
 };

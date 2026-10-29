@@ -1,7 +1,6 @@
 #include "fwpch.h"
 #include "OpenGLShader.h"
 
-#include <glm/gtc/type_ptr.hpp>
 #include <glad/glad.h>
 #include <filesystem>
 
@@ -215,7 +214,7 @@ namespace FlyWhale
         UploadUniformFloat(name, value);
     }
 
-    void OpenGLShader::SetFloat2(const std::string& name, const glm::vec2& values)
+    void OpenGLShader::SetFloat2(const std::string& name, const Vector2& values)
     {
         FW_PROFILE_FUNCTION();
 
@@ -223,28 +222,28 @@ namespace FlyWhale
     }
 
 
-    void OpenGLShader::SetFloat3(const std::string& name, const glm::vec3& values) 
+    void OpenGLShader::SetFloat3(const std::string& name, const Vector3& values) 
     {
         FW_PROFILE_FUNCTION();
 
         UploadUniformFloat3(name, values);
     }
 
-    void OpenGLShader::SetFloat4(const std::string& name, const glm::vec4& values) 
+    void OpenGLShader::SetFloat4(const std::string& name, const Vector4& values) 
     {
         FW_PROFILE_FUNCTION();
 
         UploadUniformFloat4(name, values);
     }
 
-    void OpenGLShader::SetMat3(const std::string& name, const glm::mat3& values) 
+    void OpenGLShader::SetMat3(const std::string& name, const Matrix3& values) 
     {
         FW_PROFILE_FUNCTION();
 
         UploadUniformMat3(name, values);
     }
 
-    void OpenGLShader::SetMat4(const std::string& name, const glm::mat4& values) 
+    void OpenGLShader::SetMat4(const std::string& name, const Matrix4& values) 
     {
         FW_PROFILE_FUNCTION();
 
@@ -270,31 +269,31 @@ namespace FlyWhale
         glUniform1f(location, value);
     }
 
-    void OpenGLShader::UploadUniformFloat2(const std::string& name, const glm::vec2& values)
+    void OpenGLShader::UploadUniformFloat2(const std::string& name, const Vector2& values)
     {
         GLint location = glGetUniformLocation(m_RendererID, name.c_str());
         glUniform2f(location, values.x, values.y);
     }
 
-    void OpenGLShader::UploadUniformFloat3(const std::string& name, const glm::vec3& values)
+    void OpenGLShader::UploadUniformFloat3(const std::string& name, const Vector3& values)
     {
         GLint location = glGetUniformLocation(m_RendererID, name.c_str());
         glUniform3f(location, values.x, values.y, values.z);
     }
 
-    void OpenGLShader::UploadUniformFloat4(const std::string& name, const glm::vec4& values)
+    void OpenGLShader::UploadUniformFloat4(const std::string& name, const Vector4& values)
     {
         GLint location = glGetUniformLocation(m_RendererID, name.c_str());
         glUniform4f(location, values.x, values.y, values.z, values.w);
     }
 
-    void OpenGLShader::UploadUniformMat3(const std::string& name, const glm::mat3& matrix)
+    void OpenGLShader::UploadUniformMat3(const std::string& name, const Matrix3& matrix)
     {
         GLint location = glGetUniformLocation(m_RendererID, name.c_str());
         glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
     }
 
-    void OpenGLShader::UploadUniformMat4(const std::string& name, const glm::mat4& matrix)
+    void OpenGLShader::UploadUniformMat4(const std::string& name, const Matrix4& matrix)
     {
         GLint location = glGetUniformLocation(m_RendererID, name.c_str());
         glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
