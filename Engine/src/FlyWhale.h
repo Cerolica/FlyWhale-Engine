@@ -18,6 +18,7 @@
 #include "FlyWhale/Events/MouseEvent.h"
 
 #include "FlyWhale/ImGui/ImGuiLayer.h"
+#include "FlyWhale/Math/Math.h"
 
 // ---Renderer---
 // --------------
@@ -27,6 +28,7 @@
 
 #include "FlyWhale/Renderer/Buffer.h"
 #include "FlyWhale/Renderer/Shader.h"
+#include "FlyWhale/Renderer/Framebuffer.h"
 #include "FlyWhale/Renderer/Texture.h"
 #include "FlyWhale/Renderer/SubTexture2D.h"
 #include "FlyWhale/Renderer/VertexArray.h"

@@ -14,14 +14,14 @@ namespace FlyWhale
 
     Application* Application::s_Instance = nullptr;
 
-    Application::Application() 
+    Application::Application(const std::string& name) 
     {
         FW_PROFILE_FUNCTION();
 
         FW_CORE_ASSERT(!s_Instance, "Application already exists!");
         s_Instance = this;
 
-        m_Window = std::unique_ptr<Window>(Window::Create());
+        m_Window = Window::Create(WindowProps(name));
         m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
         //m_Window->SetVSync(false);
 
@@ -52,6 +52,11 @@ namespace FlyWhale
 
         m_LayerStack.PushOverlay(layer);
         layer->OnAttach();
+    }
+
+    void Application::Close()
+    {
+        m_Running = false;
     }
 
     void Application::OnEvent(Event& e)

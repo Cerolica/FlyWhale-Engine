@@ -27,3 +27,4 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 # Include sub-projects
 add_subdirectory(Engine)
 add_subdirectory(Sandbox)
+add_subdirectory(Editor)

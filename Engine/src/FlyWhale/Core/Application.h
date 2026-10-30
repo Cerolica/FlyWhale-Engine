@@ -14,10 +14,17 @@
 namespace FlyWhale 
 {
 
+    enum class UIMode
+    {
+        ImGuiEditor, 
+        CustomEditor,
+        GameRuntime
+    };
+
     class Application 
     {
     public:
-        Application();
+        Application(const std::string& name = "FlyWhale App");
         virtual ~Application();
 
         void Run(); // Run the application
@@ -29,6 +36,7 @@ namespace FlyWhale
 
         inline Window& GetWindow() { return *m_Window; }
         
+        void Close();
 
         inline static Application& Get() { return *s_Instance; }
     private:
@@ -41,6 +49,8 @@ namespace FlyWhale
         bool m_Minimized = false;
         LayerStack m_LayerStack;
         float m_LastFrameTime = 0.0f;
+
+        UIMode m_CurrentUIMode = UIMode::ImGuiEditor;
     private:
         static Application* s_Instance;
     };

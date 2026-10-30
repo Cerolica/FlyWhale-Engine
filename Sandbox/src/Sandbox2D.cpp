@@ -43,6 +43,7 @@ void Sandbox2D::OnAttach()
     s_TextureMap['W'] = FlyWhale::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 11, 11 }, { 128, 128 });
 
     m_CameraController.SetZoomLevel(5.0f);
+
 }
 
 void Sandbox2D::OnDetach()
@@ -118,17 +119,14 @@ void Sandbox2D::OnUpdate(FlyWhale::Timestep ts)
 
     }
 
-    //FlyWhale::Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.5f }, { 1.0f, 1.0f }, m_TextureStairs);
-    //FlyWhale::Renderer2D::DrawQuad({ 1.0f, 0.0f, 0.5f }, { 1.0f, 1.0f }, m_TextureBarrel);
-    //FlyWhale::Renderer2D::DrawQuad({ -1.0f, 0.0f, 0.5f }, { 1.0f, 2.0f }, m_TextureTree);
-
-
     FlyWhale::Renderer2D::EndScene();
 }
 
 void Sandbox2D::OnImGuiRender()
 {
     FW_PROFILE_FUNCTION();
+
+    static bool dockingEnabled = true;
 
     ImGui::Begin("Settings");
 
@@ -141,6 +139,17 @@ void Sandbox2D::OnImGuiRender()
 
     ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
 
+    /*
+    uint32_t textureID = m_CheckerboardTexture->GetRendererID();
+
+    ImDrawList* drawList = ImGui::GetWindowDrawList();
+    ImGuiPlatformIO& platformIO = ImGui::GetPlatformIO();
+
+    drawList->AddCallback(platformIO.DrawCallback_SetSamplerNearest, nullptr);
+    ImGui::Image((void*)textureID, ImVec2( 256.0f, 256.0f));
+    drawList->AddCallback(platformIO.DrawCallback_SetSamplerLinear, nullptr);
+    */
+   
     ImGui::End();
 }
 
