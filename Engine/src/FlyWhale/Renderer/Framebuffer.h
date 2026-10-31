@@ -1,6 +1,7 @@
 #pragma once
 
 #include "FlyWhale/Core/Core.h"
+#include "FlyWhale/Math/Math.h"
 
 namespace FlyWhale
 {
@@ -18,8 +19,13 @@ namespace FlyWhale
     class Framebuffer
     {
     public:
+        virtual ~Framebuffer() = default;
+        
         virtual void Bind() = 0;
         virtual void Unbind() = 0;
+
+        virtual void Resize(const Vector2& size) = 0;
+        virtual void Resize(uint32_t width, uint32_t height) = 0;
 
         virtual uint32_t GetColorAttachmentRendererID() const = 0;
  

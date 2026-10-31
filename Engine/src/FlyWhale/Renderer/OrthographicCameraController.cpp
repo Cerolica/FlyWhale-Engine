@@ -59,6 +59,12 @@ namespace FlyWhale
         m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
     }
 
+    void OrthographicCameraController::OnResize(float width, float height)
+    {
+        m_AspectRatio = width / height;
+        CalculateView();
+    }
+
     bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& e)
     {
         FW_PROFILE_FUNCTION();
@@ -76,8 +82,7 @@ namespace FlyWhale
     {
         FW_PROFILE_FUNCTION();
         
-        m_AspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
-        CalculateView();
+        OnResize((float)e.GetWidth(), (float)e.GetHeight());
 
         return false;
     }
