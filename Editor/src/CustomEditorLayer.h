@@ -23,7 +23,7 @@ namespace FlyWhale
         OrthographicCameraController m_CameraController;
         OrthographicCamera m_UICamera = { 0, 1280, 0, 720};
 
-        bool m_UseImGui = true;
+        bool m_UseImGui = false;
 
         // Temp
         Ref<VertexArray> m_SquareVA;

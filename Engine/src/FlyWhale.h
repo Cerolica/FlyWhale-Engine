@@ -30,6 +30,7 @@
 #include "FlyWhale/Math/Math.h"
 #include "FlyWhale/Scene/Scene.h"
 #include "FlyWhale/Scene/Entity.h"
+#include "FlyWhale/Scene/ScriptableEntity.h"
 #include "FlyWhale/Scene/Components.h"
 
 // ---Renderer---

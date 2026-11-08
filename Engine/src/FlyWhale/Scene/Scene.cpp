@@ -12,14 +12,6 @@ namespace FlyWhale
 {
     Scene::Scene()
     {
-
-        entt::entity entity = m_Registry.create();
-        m_Registry.emplace<TransformComponent>(entity, Matrix4(1.0f));
-
-        if (m_Registry.any_of<TransformComponent>(entity))
-            TransformComponent& transform = m_Registry.get<TransformComponent>(entity);
-
-        auto view = m_Registry.view<TransformComponent>();
     }
 
     Scene::~Scene()
@@ -38,7 +30,25 @@ namespace FlyWhale
 
     void Scene::OnUpdate(Timestep ts)
     {
+
+        // Update scripts
+        // --------------
+        {
+            m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
+            {
+                if (!nsc.Instance)
+                {
+                    nsc.Instance = nsc.InstantiateScript();
+                    nsc.Instance->m_Entity = Entity{ entity, this };
+                    nsc.Instance->OnCreate();
+                }
+
+                nsc.Instance->OnUpdate(ts);
+            });  
+        }
+
         // Render 2D
+        // ---------
         Camera* mainCamera = nullptr;
         Matrix4* cameraTransform = nullptr;
         {
