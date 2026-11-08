@@ -122,7 +122,7 @@ void Sandbox2D::OnUpdate(FlyWhale::Timestep ts)
     FlyWhale::Renderer2D::EndScene();
 }
 
-void Sandbox2D::OnImGuiRender()
+void Sandbox2D::OnUIRender()
 {
     FW_PROFILE_FUNCTION();
 

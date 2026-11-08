@@ -2,6 +2,7 @@
 #include <FlyWhale/Core/EntryPoint.h>
 
 #include "EditorLayer.h"
+#include "CustomEditorLayer.h"
 
 namespace FlyWhale
 {
@@ -12,7 +13,7 @@ namespace FlyWhale
         FlyWhaleEditor() 
             : Application("FlyWhale Editor")
         {
-            PushLayer(new EditorLayer());
+            PushLayer(new CustomEditorLayer());
         }
 
         ~FlyWhaleEditor()

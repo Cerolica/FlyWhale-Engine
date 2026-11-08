@@ -12,7 +12,7 @@ public:
     virtual void OnDetach() override;
 
     void OnUpdate(FlyWhale::Timestep ts) override;
-    virtual void OnImGuiRender() override;
+    virtual void OnUIRender() override;
     void OnEvent(FlyWhale::Event& e) override;
 private:
     FlyWhale::OrthographicCameraController m_CameraController;

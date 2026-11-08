@@ -105,7 +105,7 @@ namespace FlyWhale
                     FW_PROFILE_SCOPE("LayerStack OnImGuiRender");
 
                     for (Layer* layer : m_LayerStack)
-                        layer->OnImGuiRender();
+                        layer->OnUIRender();
                 }
                 m_ImGuiLayer->End();
             }

@@ -11,6 +11,7 @@
 #include <functional>
 #include <fstream>
 #include <filesystem>
+#include <cstdint>
 
 #include <string>
 #include <sstream>
@@ -18,6 +19,7 @@
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
+#include <bit>
 
 #include "FlyWhale/Core/Log.h"
 

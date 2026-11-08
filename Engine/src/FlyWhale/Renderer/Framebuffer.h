@@ -2,6 +2,7 @@
 
 #include "FlyWhale/Core/Core.h"
 #include "FlyWhale/Math/Math.h"
+#include "FlyWhale/Renderer/Texture.h"
 
 namespace FlyWhale
 {
@@ -28,6 +29,7 @@ namespace FlyWhale
         virtual void Resize(uint32_t width, uint32_t height) = 0;
 
         virtual uint32_t GetColorAttachmentRendererID() const = 0;
+        virtual Ref<Texture2D> GetColorAttachmentTexture2D() const = 0;
  
         //virtual FramebufferSpecification& GetSpecification() = 0;
         virtual const FramebufferSpecification& GetSpecification() const = 0;

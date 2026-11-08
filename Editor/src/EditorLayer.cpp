@@ -61,7 +61,8 @@ namespace FlyWhale
         FW_PROFILE_FUNCTION();
 
         // Update
-        m_CameraController.OnUpdate(ts);
+        if (m_ViewportFocused)
+            m_CameraController.OnUpdate(ts);
         
 
         // Render
@@ -141,7 +142,7 @@ namespace FlyWhale
         m_Framebuffer->Unbind();
     }
 
-    void EditorLayer::OnImGuiRender()
+    void EditorLayer::OnUIRender()
     {
         FW_PROFILE_FUNCTION();
 
@@ -229,6 +230,12 @@ namespace FlyWhale
 
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
         ImGui::Begin("Viewport");
+
+        //FW_CORE_WARN("Focused: {0}", ImGui::IsWindowFocused());
+        m_ViewportFocused = ImGui::IsWindowFocused();
+        m_ViewportHovered = ImGui::IsWindowHovered();
+        Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
+        
 
         ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
         

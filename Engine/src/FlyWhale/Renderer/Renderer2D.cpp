@@ -112,6 +112,21 @@ namespace FlyWhale
         delete[] s_Data.QuadVertexBufferBase;
     }
 
+    void Renderer2D::BeginScene(const Camera& camera, const Matrix4& transform)
+    {
+        FW_PROFILE_FUNCTION();
+
+        Matrix4 viewProj = camera.GetProjection() * Math::Inverse(transform);
+
+        s_Data.TextureShader->Bind();
+        s_Data.TextureShader->SetMat4("u_ViewProjection", viewProj);
+
+        s_Data.QuadIndexCount = 0;
+        s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
+
+        s_Data.TextureSlotIndex = 1;
+    }
+
     void Renderer2D::BeginScene(const OrthographicCamera& camera)
     {
         FW_PROFILE_FUNCTION();
@@ -168,31 +183,10 @@ namespace FlyWhale
     {
         FW_PROFILE_FUNCTION();
 
-        constexpr size_t quadVertexCount = 4;
-        constexpr Vector2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
-
-        if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
-            FlushAndReset();
-
-        const float textureIndex = 0.0f; // White Texture
-        const float tilingFactor = 1.0f;
-
         Matrix4 transform = Math::Translate(Matrix4(1.0f), position)
                           * Math::Scale(Matrix4(1.0f), { size.x, size.y, 1.0f });
 
-        for (size_t i = 0; i < quadVertexCount; i++)
-        {
-            s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[i];
-            s_Data.QuadVertexBufferPtr->Color = color;
-            s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
-            s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
-            s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
-            s_Data.QuadVertexBufferPtr++;
-        }
-
-        s_Data.QuadIndexCount += 6;
-
-        s_Data.Stats.QuadCount++;
+        DrawQuad(transform, color);
     }
 
     void Renderer2D::DrawQuad(const Vector2& position, const Vector2& size, const Ref<Texture2D>& texture, float tilingFactor, const Vector4& tintColor)
@@ -204,8 +198,22 @@ namespace FlyWhale
     {
         FW_PROFILE_FUNCTION();
 
+        Matrix4 transform = Math::Translate(Matrix4(1.0f), position)
+                          * Math::Scale(Matrix4(1.0f), { size.x, size.y, 1.0f });
+
+        DrawQuad(transform, texture, tilingFactor, tintColor);
+    }
+
+    void Renderer2D::DrawQuad(const Vector2& position, const Vector2& size, const Ref<Texture2D>& texture, const Vector2* texCoords, float tilingFactor, const Vector4& tintColor)
+    {
+        DrawQuad({ position.x, position.y, 0.0f }, size, texture, texCoords, tilingFactor, tintColor);
+    }
+
+    void Renderer2D::DrawQuad(const Vector3& position, const Vector2& size, const Ref<Texture2D>& texture, const Vector2* texCoords, float tilingFactor, const Vector4& tintColor)
+    {
+        FW_PROFILE_FUNCTION();
+
         constexpr size_t quadVertexCount = 4;
-        constexpr Vector2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
 
         if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
             FlushAndReset();
@@ -238,7 +246,7 @@ namespace FlyWhale
         {
             s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[i];
             s_Data.QuadVertexBufferPtr->Color = tintColor;
-            s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
+            s_Data.QuadVertexBufferPtr->TexCoord = texCoords[i];
             s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
             s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
             s_Data.QuadVertexBufferPtr++;
@@ -255,6 +263,90 @@ namespace FlyWhale
     }
 
     void Renderer2D::DrawQuad(const Vector3& position, const Vector2& size, const Ref<SubTexture2D>& subTexture, float tilingFactor, const Vector4& tintColor)
+    {
+        FW_PROFILE_FUNCTION();
+
+        Matrix4 transform = Math::Translate(Matrix4(1.0f), position)
+                          * Math::Scale(Matrix4(1.0f), { size.x, size.y, 1.0f });
+
+        DrawQuad(transform, subTexture, tilingFactor, tintColor);
+    }
+
+    void Renderer2D::DrawQuad(const Matrix4& transform, const Vector4& color)
+    {
+        FW_PROFILE_FUNCTION();
+
+        constexpr size_t quadVertexCount = 4;
+        constexpr Vector2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
+
+        if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
+            FlushAndReset();
+
+        const float textureIndex = 0.0f; // White Texture
+        const float tilingFactor = 1.0f;
+
+        for (size_t i = 0; i < quadVertexCount; i++)
+        {
+            s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[i];
+            s_Data.QuadVertexBufferPtr->Color = color;
+            s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
+            s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
+            s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+            s_Data.QuadVertexBufferPtr++;
+        }
+
+        s_Data.QuadIndexCount += 6;
+
+        s_Data.Stats.QuadCount++;
+    }
+
+    void Renderer2D::DrawQuad(const Matrix4& transform, const Ref<Texture2D>& texture, float tilingFactor, const Vector4& tintColor)
+    {
+        FW_PROFILE_FUNCTION();
+
+        constexpr size_t quadVertexCount = 4;
+        constexpr Vector2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
+
+        if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
+            FlushAndReset();
+
+        float textureIndex = 0.0f;
+
+        for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++)
+        {
+            if (*s_Data.TextureSlots[i].get() == *texture.get())
+            {
+                textureIndex = (float)i;
+                break;
+            }
+        }
+
+        if (textureIndex == 0.0f)
+        {
+            if (s_Data.TextureSlotIndex >= Renderer2DData::MaxTextureSlots)
+                FlushAndReset();
+
+            textureIndex = (float)s_Data.TextureSlotIndex;
+            s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
+            s_Data.TextureSlotIndex++;
+        }
+
+        for (size_t i = 0; i < quadVertexCount; i++)
+        {
+            s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[i];
+            s_Data.QuadVertexBufferPtr->Color = tintColor;
+            s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
+            s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
+            s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+            s_Data.QuadVertexBufferPtr++;
+        }
+
+        s_Data.QuadIndexCount += 6;
+
+        s_Data.Stats.QuadCount++;
+    }
+
+    void Renderer2D::DrawQuad(const Matrix4& transform, const Ref<SubTexture2D>& subTexture, float tilingFactor, const Vector4& tintColor)
     {
         FW_PROFILE_FUNCTION();
 
@@ -285,9 +377,6 @@ namespace FlyWhale
             s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
             s_Data.TextureSlotIndex++;
         }
-
-        Matrix4 transform = Math::Translate(Matrix4(1.0f), position)
-                          * Math::Scale(Matrix4(1.0f), { size.x, size.y, 1.0f });
 
         for (size_t i = 0; i < quadVertexCount; i++)
         {

@@ -18,12 +18,14 @@ namespace FlyWhale
         virtual void Resize(const Vector2& size) override;
         virtual void Resize(uint32_t width, uint32_t height) override;
 
-        virtual uint32_t GetColorAttachmentRendererID() const override { return m_ColorAttachment; }
+        virtual uint32_t GetColorAttachmentRendererID() const override { return m_ColorTexture? m_ColorTexture->GetRendererID() : 0; }
+        virtual Ref<Texture2D> GetColorAttachmentTexture2D() const override { return m_ColorTexture; }
 
         virtual const FramebufferSpecification& GetSpecification() const override { return m_Specification; }
     private:
         uint32_t m_RendererID = 0;
-        uint32_t m_ColorAttachment = 0, m_DepthAttachment = 0;
+        uint32_t m_DepthAttachment = 0;
+        Ref<Texture2D> m_ColorTexture;
         FramebufferSpecification m_Specification;
     };
 }

@@ -99,6 +99,10 @@ namespace FlyWhale
             return glm::lookAt(eye, center, up);
         }
 
+        inline Matrix4 Orthographic(float left, float right, float bottom, float top) {
+            return glm::ortho(left, right, bottom, top, -1.0f, 1.0f);
+        }
+
         inline Matrix4 Orthographic(float left, float right, float bottom, float top, float zNear, float zFar) {
             return glm::ortho(left, right, bottom, top, zNear, zFar);
         }
@@ -119,6 +123,54 @@ namespace FlyWhale
         inline Matrix4 Scale(const Matrix4& matrix, const Vector3& scale)
         {
             return glm::scale(matrix, scale);
+        }
+
+        // --- Pointers (for OpenGL data transfer) ---
+        // -------------------------------------------
+
+        inline const float* ValuePtr(const Vector2& v)
+        {
+            return glm::value_ptr(v);
+        }
+        inline float* ValuePtr(Vector2& v)
+        {
+            return glm::value_ptr(v);
+        }
+
+        inline const float* ValuePtr(const Vector3& v)
+        {
+            return glm::value_ptr(v);
+        }
+        inline float* ValuePtr(Vector3& v)
+        {
+            return glm::value_ptr(v);
+        }
+
+        inline const float* ValuePtr(const Vector4& v)
+        {
+            return glm::value_ptr(v);
+        }
+        inline float* ValuePtr(Vector4& v)
+        {
+            return glm::value_ptr(v);
+        }
+
+        inline const float* ValuePtr(const Matrix3& m)
+        {
+            return glm::value_ptr(m);
+        }
+        inline float* ValuePtr(Matrix3& m)
+        {
+            return glm::value_ptr(m);
+        }
+
+        inline const float* ValuePtr(const Matrix4& m)
+        {
+            return glm::value_ptr(m);
+        }
+        inline float* ValuePtr(Matrix4& m)
+        {
+            return glm::value_ptr(m);
         }
 
     }

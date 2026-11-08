@@ -14,7 +14,7 @@ namespace FlyWhale
         virtual void OnDetach() override;
 
         void OnUpdate(Timestep ts) override;
-        virtual void OnImGuiRender() override;
+        virtual void OnUIRender() override;
         void OnEvent(Event& e) override;
     private:
         OrthographicCameraController m_CameraController;
@@ -31,6 +31,8 @@ namespace FlyWhale
 
         Ref<Framebuffer> m_Framebuffer;
 
+        bool m_ViewportFocused = false;
+        bool m_ViewportHovered = false;
         Vector2 m_ViewportSize = { 0.0f, 0.0f };
 
         Vector4 m_SquareColor = { 0.2f, 0.3f, 0.8f, 1.0f };

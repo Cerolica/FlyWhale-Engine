@@ -29,7 +29,7 @@ add_library(FlyWhale STATIC ${FW_SRC} vendor/glad/src/glad.c ${IMGUI_SRC} vendor
 
 # Skip pch specifically for glad.c (because it is not .cpp file duh)
 set_source_files_properties(vendor/glad/src/glad.c PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
-set_source_files_properties(IMGUI_SRC PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
+set_source_files_properties(${IMGUI_SRC} PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
 
 # Add precompiled header for all file to include
 target_precompile_headers(FlyWhale PUBLIC "src/fwpch.h")
@@ -48,6 +48,7 @@ target_include_directories(FlyWhale PUBLIC
     "vendor/imgui"
     "vendor/imgui/backends"
     "vendor/stb_image"
+    "vendor/entt"
     SYSTEM "vendor/glm"
     # Note: Add other vendor include paths here as you progress (GLFW, glad, glm, imgui)
 )

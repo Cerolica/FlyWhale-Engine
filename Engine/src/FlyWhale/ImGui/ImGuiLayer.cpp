@@ -67,6 +67,18 @@ namespace FlyWhale
     }
     */
 
+    void ImGuiLayer::OnEvent(Event& e) 
+    {
+        if (m_BlockEvents)
+        {
+            ImGuiIO& io = ImGui::GetIO();
+            e.Handled |= e.IsInCategory(EventCategoryMouse) & io.WantCaptureMouse;
+            e.Handled |= e.IsInCategory(EventCategoryKeyboard) & io.WantCaptureKeyboard;
+        }
+        
+    }
+
+
     void ImGuiLayer::Begin()
     {
         FW_PROFILE_FUNCTION();

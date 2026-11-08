@@ -17,8 +17,20 @@
 #include "FlyWhale/Events/KeyEvent.h"
 #include "FlyWhale/Events/MouseEvent.h"
 
+#include "FlyWhale/UI/Core/UIWidget.h"
+#include "FlyWhale/UI/Core/UIManager.h"
+#include "FlyWhale/UI/Layout/UIAnchor.h"
+#include "FlyWhale/UI/Widgets/UIButton.h"
+#include "FlyWhale/UI/Widgets/UIHContainer.h"
+#include "FlyWhale/UI/Widgets/UILabel.h"
+#include "FlyWhale/UI/Widgets/UIPanel.h"
+#include "FlyWhale/UI/Widgets/UIViewport.h"
+
 #include "FlyWhale/ImGui/ImGuiLayer.h"
 #include "FlyWhale/Math/Math.h"
+#include "FlyWhale/Scene/Scene.h"
+#include "FlyWhale/Scene/Entity.h"
+#include "FlyWhale/Scene/Components.h"
 
 // ---Renderer---
 // --------------
