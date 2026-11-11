@@ -9,7 +9,5 @@ namespace FlyWhale::UI
     public:
         float Spacing = 5.0f;
         float Padding = 5.0f; // Padding from the edge
-
-        virtual void RecalculateTransform() override;
     };
 }

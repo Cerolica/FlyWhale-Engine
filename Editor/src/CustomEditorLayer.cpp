@@ -51,23 +51,36 @@ namespace FlyWhale
 
         auto& window = Application::Get().GetWindow();
 
-        const UI::Rect screenRect{
-            { 0.0f, 0.0f },
-            { window.GetWidth(), window.GetHeight() }
-        };
-
         if (!m_UseImGui)
-        {
+        {   
+            m_CustomEditorCamera.SetProjection(0, window.GetWidth(), 0, window.GetHeight());
+
             m_RootUIWidget = CreateRef<UI::Widget>();
         
-            m_RootUIWidget->SetSize({ window.GetWidth(), window.GetHeight() });
+            m_RootUIWidget->SetMiniumSize({ window.GetWidth(), window.GetHeight() });
             m_RootUIWidget->SetAnchor(UI::Anchor::BottomLeft); 
 
-            Ref<UI::Panel> panel = CreateRef<UI::Panel>();
-            panel->SetAnchor(UI::Anchor::BottomCenter);
-            panel->SetSize({ 128.0f, 128.0f });
+            Ref<UI::Panel> panel = CreateRef<UI::Panel>("Panel");
+            panel->SetMiniumSize({ 128.0f, 128.0f });
+            panel->SetAnchor(UI::Anchor::TopLeft);
             m_RootUIWidget->AddChild(panel);
 
+            Ref<UI::Panel> panel2 = CreateRef<UI::Panel>("Panel 2");
+            panel2->SetMiniumSize({ 128.0f, 128.0f });
+            panel2->SetAnchor(UI::Anchor::TopCenter);
+            m_RootUIWidget->AddChild(panel2);
+
+            Ref<UI::Panel> panel3 = CreateRef<UI::Panel>("Panel 3");
+            panel3->SetMiniumSize({ 128.0f, 128.0f });
+            panel3->SetAnchor(UI::Anchor::TopRight);
+            m_RootUIWidget->AddChild(panel3);
+
+            Ref<UI::Panel> panel4 = CreateRef<UI::Panel>("Panel 4");
+            panel4->SetMiniumSize({ 128.0f, 128.0f });
+            panel4->SetAnchor(UI::Anchor::BottomWide);
+            m_RootUIWidget->AddChild(panel4);
+
+            m_RootUIWidget->LayoutIn({ { 0.0f, 0.0f }, { window.GetWidth(), window.GetHeight() } });
             m_RootUIWidget->RecalculateTransform();
 
             FW_CORE_WARN("Root position: {0}, {1}", m_RootUIWidget->GetAbsolutePosition().x, m_RootUIWidget->GetAbsolutePosition().y);
@@ -123,6 +136,8 @@ namespace FlyWhale
 
         m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
         m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+
+        m_SceneHierarchyPanel.SetContext(m_ActiveScene);
     }
 
     void CustomEditorLayer::OnDetach()
@@ -156,7 +171,7 @@ namespace FlyWhale
         {
             m_Framebuffer->Resize(m_ViewportSize);
             m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
-            m_UICamera.SetProjection(0.0f, window.GetWidth(), 0.0f, window.GetHeight());
+            m_CustomEditorCamera.SetProjection(0.0f, window.GetWidth(), 0.0f, window.GetHeight());
             m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
         }
 
@@ -268,6 +283,10 @@ namespace FlyWhale
             ImGui::EndMenuBar();
         }
 
+        // Scene hierarchy panel
+        // ---------------------
+        m_SceneHierarchyPanel.OnUIRender();
+
         // Setting menu
         // ------------
 
@@ -375,11 +394,13 @@ namespace FlyWhale
         
         m_ViewportFocused = m_ViewportHovered;
 
+        Renderer2D::BeginScene(m_CustomEditorCamera);
+
         RenderCommand::SetViewport(0, 0, window.GetWidth(), window.GetHeight());
         RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.5f, 1.0f });
         RenderCommand::Clear();
 
-        Renderer2D::BeginScene(m_UICamera);
+        
         Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
 
         if (m_RootUIWidget)

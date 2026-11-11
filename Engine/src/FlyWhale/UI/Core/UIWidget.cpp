@@ -32,11 +32,23 @@ namespace FlyWhale::UI
         if (m_Parent)
         {
             Vector2 pPos = m_Parent->m_AbsolutePosition;
-            Vector2 pSize = m_Parent->m_Size;
-            Vector2 anchorPoint = pPos;
+            Vector2 pSize = m_Parent->m_MiniumSize;
 
-            m_AbsolutePosition.x = pSize.x * (m_AnchorPoint.Left + m_AnchorPoint.Right) / 2.0f;
-            m_AbsolutePosition.y = pSize.y * (m_AnchorPoint.Bottom + m_AnchorPoint.Top) / 2.0f;
+            FW_CORE_WARN("{2} Parent position: {0}, {1}", pPos.x, pPos.y, m_Name);
+
+            float leftAbsolutePosition = pSize.x * m_AnchorPoint.Left + m_AnchorOffset.Left;
+            float rightAbsolutePosition = pSize.x * m_AnchorPoint.Right + m_AnchorOffset.Right;
+            float bottomAbsolutePosition = pSize.y * m_AnchorPoint.Bottom + m_AnchorOffset.Bottom;
+            float topAbsolutePosition = pSize.y * m_AnchorPoint.Top + m_AnchorOffset.Top;
+
+            m_AbsolutePosition.x = pPos.x 
+                                 + (leftAbsolutePosition + rightAbsolutePosition) / 2.0f
+                                 - m_Size.x / 2.0f;
+            m_AbsolutePosition.y = pPos.y 
+                                 + (bottomAbsolutePosition + topAbsolutePosition) / 2.0f
+                                 - m_Size.y / 2.0f;
+            
+            FW_CORE_WARN("{2} Absolute position: {0}, {1}", m_AbsolutePosition.x, m_AbsolutePosition.y, m_Name);
 
         }
         else   
@@ -46,13 +58,18 @@ namespace FlyWhale::UI
             child->RecalculateTransform();
     }
 
-    void Widget::LayoutIn(const Rect& parent)
+    void Widget::LayoutIn(const Rect& parentRect)
     {
-        const Vector2 parentSize = parent.Size();
-        /*
-        m_Rect.min = parent.min + parentSize * m_AnchorMin + m_OffsetMin;
-        m_Rect.max = parent.min + parentSize * m_AnchorMax + m_OffsetMax;
-        */
+        const Vector2 parentSize = parentRect.Size();
+        
+        m_Rect.min.x = parentRect.min.x + parentSize.x * m_AnchorPoint.Left + m_AnchorOffset.Left;
+        m_Rect.min.y = parentRect.min.y + parentSize.y * m_AnchorPoint.Bottom + m_AnchorOffset.Bottom;
+        m_Rect.max.x = parentRect.min.x + parentSize.x * m_AnchorPoint.Right + m_AnchorOffset.Right;
+        m_Rect.max.y = parentRect.min.y + parentSize.y * m_AnchorPoint.Top + m_AnchorOffset.Top;
+
+        FW_CORE_WARN("{4} m_Rect size: {0}, {1}, {2}, {3}",
+                     m_Rect.min.x, m_Rect.min.y, m_Rect.max.x, m_Rect.max.y, m_Name);
+
         m_AbsolutePosition = m_Rect.min;
         m_Size = m_Rect.Size();
 
@@ -66,19 +83,20 @@ namespace FlyWhale::UI
                point.y >= m_AbsolutePosition.y && point.y <= m_AbsolutePosition.y + m_Size.y;
     }
 
-    void Widget::UpdateLayout()
+    void Widget::CalculateAnchorOffset()
     {
-        Vector2 miniumSizeNeeded(0.0f, 0.0f);
-        for (auto& child : m_Children)
-        {
-            miniumSizeNeeded += child->GetMiniumSize();
-        }
+        m_AnchorOffset.Left = -m_AnchorPoint.Left * m_MiniumSize.x;
+        m_AnchorOffset.Bottom = -m_AnchorPoint.Bottom * m_MiniumSize.y;
+        m_AnchorOffset.Right = m_MiniumSize.x - m_AnchorPoint.Right * m_MiniumSize.x;
+        m_AnchorOffset.Top = m_MiniumSize.y - m_AnchorPoint.Top * m_MiniumSize.y;
+        
+        FW_CORE_WARN("{4} Widget anchor offset: {0}, {1}, {2}, {3}", 
+                     m_AnchorOffset.Left, m_AnchorOffset.Bottom, m_AnchorOffset.Right, m_AnchorOffset.Top, m_Name);
     }
 
     void Widget::SetAnchor(Anchor anchor)
     {
         m_Anchor = anchor;
-        m_Pivot = AnchorToPivot(m_Anchor);
         
         switch (m_Anchor)
         {
@@ -106,7 +124,7 @@ namespace FlyWhale::UI
             default: break;
         }
         
-
+        CalculateAnchorOffset();
         m_FlagDirty = true;
     }
 

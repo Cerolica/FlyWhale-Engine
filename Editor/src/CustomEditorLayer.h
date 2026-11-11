@@ -1,6 +1,8 @@
 #pragma once
 #include <FlyWhale.h>
 
+#include "Panels/SceneHierarchyPanel.h"
+
 namespace FlyWhale
 {
 
@@ -21,7 +23,7 @@ namespace FlyWhale
         void RenderCustomUI();
     private:
         OrthographicCameraController m_CameraController;
-        OrthographicCamera m_UICamera = { 0, 1280, 0, 720};
+        OrthographicCamera m_CustomEditorCamera = { 0, 1280, 0, 720};
 
         bool m_UseImGui = false;
 
@@ -55,5 +57,8 @@ namespace FlyWhale
 
         uint32_t m_MapWidth, m_MapHeight;
         std::unordered_map<char, Ref<SubTexture2D>> s_TextureMap;
+
+        // Panels
+        SceneHierarchyPanel m_SceneHierarchyPanel;
     };
 }

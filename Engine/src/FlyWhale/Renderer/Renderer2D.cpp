@@ -129,7 +129,7 @@ namespace FlyWhale
 
     void Renderer2D::BeginScene(const OrthographicCamera& camera)
     {
-        FW_PROFILE_FUNCTION();
+        FW_PROFILE_FUNCTION();                                                                                                                                                                                                          
 
         s_Data.TextureShader->Bind();
         s_Data.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
