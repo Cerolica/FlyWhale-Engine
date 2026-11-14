@@ -13,7 +13,12 @@ namespace FlyWhale
         FlyWhaleEditor() 
             : Application("FlyWhale Editor")
         {
-            PushLayer(new CustomEditorLayer());
+            switch(m_UIMode)
+            {
+                case UIMode::ImGuiEditor: PushLayer(new EditorLayer());
+                case UIMode::CustomEditor: PushLayer(new CustomEditorLayer());
+                default: break;
+            }
         }
 
         ~FlyWhaleEditor()

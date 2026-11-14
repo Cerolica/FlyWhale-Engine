@@ -48,6 +48,60 @@ namespace FlyWhale
         fbSpec.Width = 1280;
         fbSpec.Height = 720;
         m_Framebuffer = Framebuffer::Create(fbSpec);
+
+        auto& window = Application::Get().GetWindow();
+        window.SetCursor(CursorType::Hand);
+
+        // Scene
+        // -----
+        m_ActiveScene = CreateRef<Scene>();
+
+        auto square = m_ActiveScene->CreateEntity("Green Square");
+        square.AddComponent<SpriteRendererComponent>(Vector4{0.0f, 1.0f, 0.0f, 1.0f });
+        
+        m_SquareEntity = square;
+
+        m_CameraEntity = m_ActiveScene->CreateEntity("Camera Entity");
+        m_CameraEntity.AddComponent<CameraComponent>();
+
+        m_SecondCamera = m_ActiveScene->CreateEntity("Clip-Space Entity");
+        auto& cc = m_SecondCamera.AddComponent<CameraComponent>();
+        cc.Primary = false;
+
+        class CameraController : public ScriptableEntity
+        {
+
+        public:
+            void OnCreate()
+            {
+                auto& transform = GetComponent<TransformComponent>().Transform;
+                transform[3][0] = rand() % 10 - 5.0f;
+            }
+            
+            void OnDestroy()
+            {
+            }
+
+            void OnUpdate(Timestep ts)
+            {
+                auto& transform = GetComponent<TransformComponent>().Transform;
+                float speed = 5.0f;
+
+                if (Input::IsKeyPressed(Key::A))
+                    transform[3][0] -= speed * ts;
+                if (Input::IsKeyPressed(Key::D))
+                    transform[3][0] += speed * ts;
+                if (Input::IsKeyPressed(Key::W))
+                    transform[3][1] += speed * ts;
+                if (Input::IsKeyPressed(Key::S))
+                    transform[3][1] -= speed * ts;
+            }
+        };
+
+        m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+        m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+
+        m_SceneHierarchyPanel.SetContext(m_ActiveScene);
     }
 
     void EditorLayer::OnDetach()
@@ -61,88 +115,39 @@ namespace FlyWhale
         FW_PROFILE_FUNCTION();
 
         // Update
+        // ------
         if (m_ViewportFocused)
             m_CameraController.OnUpdate(ts);
-        
 
         // Render
+        // ------
         // Reset stats here
         Renderer2D::ResetStats();
+
+        auto& spec = m_Framebuffer->GetSpecification();
+        auto& window = Application::Get().GetWindow();
+
+        if (m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f &&
+            (spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y))
         {
-            FW_PROFILE_SCOPE("Renderer Prep");
-
-            auto& spec = m_Framebuffer->GetSpecification();
-
-            if (m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f &&
-                (spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y))
-            {
-                m_Framebuffer->Resize(m_ViewportSize);
-                m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
-            }
-
-            m_Framebuffer->Bind();
-
-            RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
-            RenderCommand::Clear();
-        }
-    #if 0
-        {
-
-            static float rotation = 0.0f;
-            rotation += ts * 20.0f;
-
-            FW_PROFILE_SCOPE("Renderer Draw");
-            Renderer2D::BeginScene(m_CameraController.GetCamera());
-
-            Renderer2D::DrawRotatedQuad({ 1.0f, 0.0f }, {0.8f, 0.8f }, -45.0f, { 0.8f, 0.2f, 0.3f, 1.0f });
-            Renderer2D::DrawQuad({ -1.0f, 0.0f }, {0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
-            Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, { 0.2f, 0.3f, 0.8f, 1.0f });
-            Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 20.0f, 20.0f }, m_CheckerboardTexture, 10.0f);
-            Renderer2D::DrawRotatedQuad({ -2.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, rotation, m_CheckerboardTexture, 20.0f);
-
-            Renderer2D::EndScene();
-
-            Renderer2D::BeginScene(m_CameraController.GetCamera());
-
-            for (float y = -5.0f; y < 5.0f; y += 0.5f)
-            {
-                for (float x = -5.0f; x < 5.0f; x += 0.5f)
-                {
-                    Vector4 color = { (x + 5.0f) / 10.0f, 0.4f, (y + 5.0f) / 10.0f, 0.7f };
-
-                    Renderer2D::DrawQuad({ x, y }, { 0.45f, 0.45f }, color);
-                }
-            }
-
-            Renderer2D::EndScene();
-        }
-    #endif
-
-        Renderer2D::BeginScene(m_CameraController.GetCamera());
-
-        for (uint32_t y = 0; y < m_MapHeight; y++)
-        {
-            for (uint32_t x = 0; x < m_MapWidth; x++)
-            {
-                char tileType = s_MapTiles[x + y * m_MapWidth];
-                Ref<SubTexture2D> texture;
-
-                if (s_TextureMap.find(tileType) != s_TextureMap.end())
-                    texture = s_TextureMap[tileType];
-                else 
-                    texture = m_TextureStairs;
-                Renderer2D::DrawQuad({ x - m_MapWidth / 2.0f, m_MapHeight - y - m_MapHeight / 2.0f, 0.5f }, { 1.0f, 1.0f }, texture);
-            }
-
+            m_Framebuffer->Resize(m_ViewportSize);
+            m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
+            m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
         }
 
+        m_Framebuffer->Bind();
 
+        RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
+        RenderCommand::Clear();
 
-        Renderer2D::EndScene();
+        // Update scene
+        m_ActiveScene->OnUpdate(ts);
+
         m_Framebuffer->Unbind();
+        
     }
 
-    void EditorLayer::OnUIRender()
+    void EditorLayer::OnRenderUI()
     {
         FW_PROFILE_FUNCTION();
 
@@ -209,6 +214,10 @@ namespace FlyWhale
             ImGui::EndMenuBar();
         }
 
+        // Scene hierarchy panel
+        // ---------------------
+        m_SceneHierarchyPanel.OnRenderUI();
+
         // Setting menu
         // ------------
 
@@ -221,7 +230,32 @@ namespace FlyWhale
         ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
         ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 
-        ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
+        if (m_SquareEntity) 
+        {
+            ImGui::Separator();
+            ImGui::Text("%s", m_SquareEntity.GetComponent<TagComponent>().Tag.c_str());
+
+            auto& squareColor = m_SquareEntity.GetComponent<SpriteRendererComponent>().Color;
+            ImGui::ColorEdit4("Square Color", Math::ValuePtr(squareColor));
+        }
+        
+        ImGui::DragFloat3("Camera transform",
+            Math::ValuePtr(m_CameraEntity.GetComponent<TransformComponent>().Transform[3]));
+
+        if (ImGui::Checkbox("Camera A", &m_PrimaryCamera))
+        {
+            m_CameraEntity.GetComponent<CameraComponent>().Primary = m_PrimaryCamera;
+            m_SecondCamera.GetComponent<CameraComponent>().Primary = !m_PrimaryCamera;
+        }
+
+        {
+            auto& camera = m_SecondCamera.GetComponent<CameraComponent>().Camera;
+            float orthoSize = camera.GetOrthographicSize();
+            if (ImGui::DragFloat("Second camera ortho size", &orthoSize))
+            {
+                camera.SetOrthoGraphicSize(orthoSize);
+            }
+        }
         
         ImGui::End();
     
@@ -236,7 +270,6 @@ namespace FlyWhale
         m_ViewportHovered = ImGui::IsWindowHovered();
         Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
         
-
         ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
         
         m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
@@ -248,18 +281,24 @@ namespace FlyWhale
         ImGuiPlatformIO& platformIO = ImGui::GetPlatformIO();
 
         drawList->AddCallback(platformIO.DrawCallback_SetSamplerNearest, nullptr);
-        ImGui::Image((void*)textureID, ImVec2( m_ViewportSize.x, m_ViewportSize.y ), ImVec2( 0, 1 ), ImVec2( 1, 0 ));
+        ImGui::Image(reinterpret_cast<void*>(static_cast<std::uintptr_t>(textureID)), ImVec2( m_ViewportSize.x, m_ViewportSize.y ), ImVec2( 0, 1 ), ImVec2( 1, 0 ));
         drawList->AddCallback(platformIO.DrawCallback_SetSamplerLinear, nullptr);
 
         ImGui::End();
         ImGui::PopStyleVar();
 
         ImGui::End();
-    
+        
     }
 
     void EditorLayer::OnEvent(Event& e)
     {
         m_CameraController.OnEvent(e);
+
+        EventDispatcher dispatcher(e);
+        dispatcher.Dispatch<WindowResizeEvent>([this](WindowResizeEvent& e)
+        {
+            return false;
+        });
     }
 }

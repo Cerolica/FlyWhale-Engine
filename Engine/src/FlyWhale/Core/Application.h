@@ -41,6 +41,8 @@ namespace FlyWhale
         ImGuiLayer* GetImGuiLayer() { return m_ImGuiLayer; }
 
         inline static Application& Get() { return *s_Instance; }
+    protected:
+        UIMode m_UIMode;
     private:
         bool OnWindowClose(WindowCloseEvent& e);
         bool OnWindowResize(WindowResizeEvent& e);
@@ -52,7 +54,6 @@ namespace FlyWhale
         LayerStack m_LayerStack;
         float m_LastFrameTime = 0.0f;
 
-        UIMode m_CurrentUIMode = UIMode::ImGuiEditor;
     private:
         static Application* s_Instance;
     };

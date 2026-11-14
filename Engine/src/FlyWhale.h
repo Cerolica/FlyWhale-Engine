@@ -17,11 +17,18 @@
 #include "FlyWhale/Events/KeyEvent.h"
 #include "FlyWhale/Events/MouseEvent.h"
 
+// Custom UI system
+// ----------------
 #include "FlyWhale/UI/Core/UIWidget.h"
-#include "FlyWhale/UI/Core/UIManager.h"
+
+#include "FlyWhale/UI/Core/UICanvas.h"
 #include "FlyWhale/UI/Layout/UIAnchor.h"
 #include "FlyWhale/UI/Widgets/UIButton.h"
-#include "FlyWhale/UI/Widgets/UIHContainer.h"
+
+#include "FlyWhale/UI/Widgets/UIContainer.h"
+#include "FlyWhale/UI/Widgets/UISplitContainer.h"
+#include "FlyWhale/UI/Widgets/UIHSplitContainer.h"
+#include "FlyWhale/UI/Widgets/UIVSplitContainer.h"
 #include "FlyWhale/UI/Widgets/UILabel.h"
 #include "FlyWhale/UI/Widgets/UIPanel.h"
 #include "FlyWhale/UI/Widgets/UIViewport.h"
@@ -46,4 +53,4 @@
 #include "FlyWhale/Renderer/SubTexture2D.h"
 #include "FlyWhale/Renderer/VertexArray.h"
 
-#include "FlyWhale/Renderer/OrthographicCamera.h"
+#include "FlyWhale/Renderer/Editor2DCamera.h"

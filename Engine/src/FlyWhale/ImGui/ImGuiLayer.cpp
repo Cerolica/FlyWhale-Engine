@@ -30,6 +30,7 @@ namespace FlyWhale
         io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
         //io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoTaskBarIcons;
 		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoMerge;
+        io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
 
         // Setup Dear ImGui style
         ImGui::StyleColorsDark();

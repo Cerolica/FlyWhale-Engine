@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FlyWhale/Renderer/OrthographicCamera.h"
+#include "FlyWhale/Renderer/Editor2DCamera.h"
 #include "FlyWhale/Renderer/Camera.h"
 
 #include "FlyWhale/Renderer/Texture.h"
@@ -18,7 +18,7 @@ namespace FlyWhale
         static void Shutdown();
 
         static void BeginScene(const Camera& camera, const Matrix4& transform);
-        static void BeginScene(const OrthographicCamera& camera); // TODO: Remove
+        static void BeginScene(const Editor2DCamera& camera); // TODO: Remove
         static void EndScene();
         static void Flush();
 

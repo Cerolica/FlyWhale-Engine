@@ -1,5 +1,6 @@
 #include "FlyWhale/Core/Core.h"
 #include "FlyWhale/Events/Event.h"
+#include "FlyWhale/Core/CursorType.h"
 
 namespace FlyWhale 
 {
@@ -26,6 +27,7 @@ namespace FlyWhale
 
         virtual void OnUpdate() = 0;
 
+        virtual void SetSizeLimits(int minWidth, int minHeight, int maxWidth, int maxHeight) = 0;
         virtual uint32_t GetWidth() const = 0;
         virtual uint32_t GetHeight() const = 0;
 
@@ -33,6 +35,8 @@ namespace FlyWhale
         virtual void SetEventCallback(const EventCallbackFn& callback) = 0;
         virtual void SetVSync(bool enabled) = 0;
         virtual bool IsVSync() const = 0;
+
+        virtual void SetCursor(CursorType type) = 0;
 
         virtual void* GetNativeWindow() const = 0;
 

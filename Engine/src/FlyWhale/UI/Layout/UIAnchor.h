@@ -5,7 +5,7 @@
 namespace FlyWhale::UI
 {
 
-    enum class Anchor
+    enum class AnchorPreset
     {
         BottomLeft, BottomCenter, BottomRight, BottomWide,
         CenterLeft, Center,       CenterRight, HCenterWide,
@@ -16,33 +16,17 @@ namespace FlyWhale::UI
 
     struct AnchorPoint
     {
-        float Left, Bottom, Right, Top;
+        float Left, Top, Right, Bottom;
     };
 
     struct AnchorOffset
     {
-        int32_t Left, Bottom, Right, Top;
+        int32_t Left, Top, Right, Bottom;
     };
 
-    inline Vector2 AnchorToPivot(Anchor anchor)
+    class AnchorUtils
     {
-        switch (anchor)
-        {
-            case Anchor::BottomLeft:   return { 0.0f, 0.0f }; break;
-            case Anchor::BottomCenter: return { 0.5f, 0.0f }; break;
-            case Anchor::BottomRight:  return { 1.0f, 0.0f }; break;
-            
-            case Anchor::CenterLeft:   return { 0.0f, 0.5f }; break;
-            case Anchor::Center:       return { 0.5f, 0.5f }; break;
-            case Anchor::CenterRight:  return { 1.0f, 0.5f }; break;
-            
-            case Anchor::TopLeft:      return { 0.0f, 1.0f }; break;
-            case Anchor::TopCenter:    return { 0.5f, 1.0f }; break;
-            case Anchor::TopRight:     return { 1.0f, 1.0f }; break;
-
-            case Anchor::Stretch:      return { 0.0f, 0.0f }; break;
-            
-            default: return { 0.0f, 0.0f }; break;
-        }
-    }
+    public:
+        static AnchorPoint GetPointForPreset(AnchorPreset preset);
+    };
 }

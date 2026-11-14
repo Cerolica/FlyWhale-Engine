@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FlyWhale/Renderer/OrthographicCamera.h"
+#include "FlyWhale/Renderer/Editor2DCamera.h"
 #include "FlyWhale/Core/Timestep.h"
 
 #include "FlyWhale/Events/ApplicationEvent.h"
@@ -19,8 +19,8 @@ namespace FlyWhale
 
         void OnResize(float width, float height);
 
-        inline OrthographicCamera& GetCamera() { return m_Camera; }
-        inline const OrthographicCamera& GetCamera() const { return m_Camera; }
+        inline Editor2DCamera& GetCamera() { return m_Camera; }
+        inline const Editor2DCamera& GetCamera() const { return m_Camera; }
 
         inline float GetZoomLevel() { return m_ZoomLevel; }
         inline void SetZoomLevel(float level) { m_ZoomLevel = level; CalculateView(); }
@@ -32,7 +32,7 @@ namespace FlyWhale
     private:
         float m_AspectRatio;
         float m_ZoomLevel = 1.0f;
-        OrthographicCamera m_Camera;
+        Editor2DCamera m_Camera;
 
         bool m_Rotation = false;
 

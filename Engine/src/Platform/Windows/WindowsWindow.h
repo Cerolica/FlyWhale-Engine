@@ -19,6 +19,7 @@ namespace FlyWhale
 
         void OnUpdate() override;
 
+        void SetSizeLimits(int minWidth, int minHeight, int maxWidth, int maxHeight) override;
         inline uint32_t GetWidth() const override { return m_Data.Width; }
         inline uint32_t GetHeight() const override { return m_Data.Height; }
 
@@ -30,6 +31,8 @@ namespace FlyWhale
         void SetVSync(bool enabled) override;
         bool IsVSync() const override;
 
+        virtual void SetCursor(CursorType type) override;
+
         inline virtual void* GetNativeWindow() const { return m_Window; }
     private: // For functions 
         virtual void Init(const WindowProps& props);
@@ -37,6 +40,8 @@ namespace FlyWhale
     private: // For datas
         GLFWwindow* m_Window;
         GraphicsContext*  m_Context;
+
+        std::array<GLFWcursor*, (size_t)CursorType::NumCursors> m_Cursors = { nullptr };
 
         struct WindowData
         {

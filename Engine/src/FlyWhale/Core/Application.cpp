@@ -20,6 +20,7 @@ namespace FlyWhale
 
         FW_CORE_ASSERT(!s_Instance, "Application already exists!");
         s_Instance = this;
+        s_Instance->m_UIMode = UIMode::ImGuiEditor;
 
         m_Window = Window::Create(WindowProps(name));
         m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
@@ -27,8 +28,11 @@ namespace FlyWhale
 
         Renderer::Init();
 
-        m_ImGuiLayer = new ImGuiLayer();
-        PushOverlay(m_ImGuiLayer);
+        if (m_UIMode == UIMode::ImGuiEditor)
+        {
+            m_ImGuiLayer = new ImGuiLayer();
+            PushOverlay(m_ImGuiLayer);
+        }
     }
 
     Application::~Application() 
@@ -100,14 +104,18 @@ namespace FlyWhale
                         layer->OnUpdate(timestep);
                 }
 
-                m_ImGuiLayer->Begin();
+                if (m_UIMode == UIMode::ImGuiEditor)
+                    m_ImGuiLayer->Begin();
+
                 {
                     FW_PROFILE_SCOPE("LayerStack OnImGuiRender");
 
                     for (Layer* layer : m_LayerStack)
-                        layer->OnUIRender();
+                        layer->OnRenderUI();
                 }
-                m_ImGuiLayer->End();
+
+                if (m_UIMode == UIMode::ImGuiEditor)
+                    m_ImGuiLayer->End();
             }
 
             m_Window->OnUpdate();

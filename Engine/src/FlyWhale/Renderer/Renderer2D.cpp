@@ -127,7 +127,7 @@ namespace FlyWhale
         s_Data.TextureSlotIndex = 1;
     }
 
-    void Renderer2D::BeginScene(const OrthographicCamera& camera)
+    void Renderer2D::BeginScene(const Editor2DCamera& camera)
     {
         FW_PROFILE_FUNCTION();                                                                                                                                                                                                          
 

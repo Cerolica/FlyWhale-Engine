@@ -16,7 +16,7 @@ namespace FlyWhale
         virtual void OnAttach() {}
         virtual void OnDetach() {}
         virtual void OnUpdate(Timestep ts) {}
-        virtual void OnUIRender() {}
+        virtual void OnRenderUI() {}
         virtual void OnEvent(Event& e) {}
 
         inline const std::string& GetName() const { return m_DebugName; }

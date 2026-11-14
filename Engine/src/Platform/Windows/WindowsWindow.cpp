@@ -72,6 +72,8 @@ namespace FlyWhale
         glfwSetWindowUserPointer(m_Window, &m_Data);
         SetVSync(true);
 
+        SetSizeLimits(640, 360, GLFW_DONT_CARE, GLFW_DONT_CARE);
+
         // Set GLFW callbacks
         glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
         {
@@ -161,11 +163,24 @@ namespace FlyWhale
             MouseMovedEvent event((float)xPos, (float)yPos);
             data.EventCallback(event);
         });
+
+        // Pre-create standard cursors during window initialization
+        m_Cursors[(size_t)CursorType::Arrow]     = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+        m_Cursors[(size_t)CursorType::IBeam]     = glfwCreateStandardCursor(GLFW_IBEAM_CURSOR);
+        m_Cursors[(size_t)CursorType::Crosshair] = glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR);
+        m_Cursors[(size_t)CursorType::Hand]      = glfwCreateStandardCursor(GLFW_HAND_CURSOR);
+        m_Cursors[(size_t)CursorType::HResize]   = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
+        m_Cursors[(size_t)CursorType::VResize]   = glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
     }
 
     void WindowsWindow::Shutdown() 
     {
         FW_PROFILE_FUNCTION();
+
+        for (GLFWcursor* cursor : m_Cursors)
+        {
+            if (cursor) glfwDestroyCursor(cursor);
+        }
 
         glfwDestroyWindow(m_Window);
     }
@@ -176,6 +191,17 @@ namespace FlyWhale
 
         glfwPollEvents();
         m_Context->SwapBuffers();
+    }
+
+    void WindowsWindow::SetSizeLimits(int minWidth, int minHeight, int maxWidth, int maxHeight)
+    {
+        glfwSetWindowSizeLimits(
+            m_Window,
+            minWidth < 0 ? GLFW_DONT_CARE : minWidth,
+            minHeight < 0 ? GLFW_DONT_CARE : minHeight,
+            maxWidth < 0 ? GLFW_DONT_CARE : std::max(minWidth, maxWidth),
+            maxHeight < 0 ? GLFW_DONT_CARE : std::max(minHeight, maxHeight)
+        );
     }
 
     void WindowsWindow::SetVSync(bool enabled)
@@ -191,5 +217,13 @@ namespace FlyWhale
     bool WindowsWindow::IsVSync() const
     {
         return m_Data.VSync;
+    }
+
+    void WindowsWindow::SetCursor(CursorType type)
+    {
+        if (m_Window)
+        {
+            glfwSetCursor(m_Window, m_Cursors[(size_t)type]);
+        }
     }
 }

@@ -2,6 +2,7 @@
 #include <FlyWhale.h>
 
 #include "Panels/SceneHierarchyPanel.h"
+#include "EditorWorkspace.h"
 
 namespace FlyWhale
 {
@@ -16,16 +17,12 @@ namespace FlyWhale
         virtual void OnDetach() override;
 
         void OnUpdate(Timestep ts) override;
-        virtual void OnUIRender() override;
+        virtual void OnRenderUI() override;
         void OnEvent(Event& e) override;
+    
     private:
-        void RenderImGui();
-        void RenderCustomUI();
-    private:
-        OrthographicCameraController m_CameraController;
-        OrthographicCamera m_CustomEditorCamera = { 0, 1280, 0, 720};
-
-        bool m_UseImGui = false;
+        EditorContext m_EditorContext;
+        EditorWorkspace m_EditorWorkspace;
 
         // Temp
         Ref<VertexArray> m_SquareVA;
@@ -39,14 +36,11 @@ namespace FlyWhale
 
         Ref<Framebuffer> m_Framebuffer;
 
-        Ref<Scene> m_ActiveScene;
         Entity m_SquareEntity;
         Entity m_CameraEntity;
         Entity m_SecondCamera;
 
         bool m_PrimaryCamera = true;
-
-        Ref<UI::Widget> m_RootUIWidget;
 
         bool m_ViewportFocused = false;
         bool m_ViewportHovered = false;

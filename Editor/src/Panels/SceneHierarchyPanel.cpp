@@ -16,15 +16,7 @@ namespace FlyWhale
         m_Context = context;
     }
     
-    void SceneHierarchyPanel::OnUIRender()
-    {
-        if (m_UseImGui)
-            RenderImGui();
-        else
-            RenderCustomUI();
-    }
-
-    void SceneHierarchyPanel::RenderImGui()
+    void SceneHierarchyPanel::OnRenderUI()
     {
         ImGui::Begin("Scene Hierarchy");
 
@@ -34,12 +26,20 @@ namespace FlyWhale
             DrawEntityNode(entity);
         });
 
+        if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
+        {
+            m_SelectionContext = {};
+        }
+
         ImGui::End();
-    }
 
-    void SceneHierarchyPanel::RenderCustomUI()
-    {
+        ImGui::Begin("Properties");
+        if (m_SelectionContext)
+        {
+            DrawComponents(m_SelectionContext);
+        }
 
+        ImGui::End();
     }
 
     void SceneHierarchyPanel::DrawEntityNode(Entity entity)
@@ -53,7 +53,7 @@ namespace FlyWhale
             m_SelectionContext = entity;
         }
 
-        if (opened)
+        if (opened) 
         {
             ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
             bool opened = ImGui::TreeNodeEx((void*)1000, flags, tag.c_str());
@@ -64,6 +64,83 @@ namespace FlyWhale
         }
     }
 
+    void SceneHierarchyPanel::DrawComponents(Entity entity)
+    {
+
+        if (entity.HasComponent<TagComponent>())
+        {
+            auto& tag = entity.GetComponent<TagComponent>().Tag;
+
+            char buffer[256];
+            memset(buffer, 0, sizeof(buffer));
+            strcpy_s(buffer, sizeof(buffer), tag.c_str());
+            if (ImGui::InputText("Tag", buffer, sizeof(buffer)))
+            {
+                tag = std::string(buffer);
+            }
+        }
+
+        if (entity.HasComponent<TransformComponent>())
+        {
+
+            if (ImGui::TreeNodeEx((void*)typeid(TransformComponent).hash_code(), 
+                                  ImGuiTreeNodeFlags_DefaultOpen, "Transform"))
+            {
+                auto& transform = entity.GetComponent<TransformComponent>().Transform;
+
+                ImGui::DragFloat3("Position", Math::ValuePtr(transform[3]), 0.25f);
+
+                ImGui::TreePop();
+            }
+
+            
+        }
+
+        if (entity.HasComponent<CameraComponent>())
+        {
+
+            if (ImGui::TreeNodeEx((void*)typeid(CameraComponent).hash_code(), 
+                                  ImGuiTreeNodeFlags_DefaultOpen, "Transform"))
+            {
+                auto& cameraComponent = entity.GetComponent<CameraComponent>();
+
+                const char* projectionTypetrings[] = { "Perspective", "Orthographic" };
+                const char* currentProjectionTypeString = projectionTypetrings[(int)cameraComponent.Camera.GetProjectionType()];
+                if (ImGui::BeginCombo("Projection", currentProjectionTypeString))
+                {
+
+                    for (int i = 0; i < 2; i++)
+                    {
+                        bool isSelected = currentProjectionTypeString == projectionTypetrings[i];
+                        if (ImGui::Selectable(projectionTypetrings[i], isSelected))
+                        {
+                            currentProjectionTypeString = projectionTypetrings[i];
+                            cameraComponent.Camera.SetProjectionType((SceneCamera::ProjectionType)i);
+                        }
+
+                        if (isSelected)
+                            ImGui::SetItemDefaultFocus();
+                    }
+
+                    ImGui::EndCombo();
+                }
+
+                if (cameraComponent.Camera.GetProjectionType() == SceneCamera::ProjectionType::Perspective)
+                {
+
+                }
+                
+                if (cameraComponent.Camera.GetProjectionType() == SceneCamera::ProjectionType::Orthographic)
+                {
+
+                }
+                
+                ImGui::TreePop();
+            }
+
+            
+        }
+    }
 
 
 }
